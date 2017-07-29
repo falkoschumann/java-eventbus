@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/falkoschumann/java-eventbus.svg?branch=master)](https://travis-ci.org/falkoschumann/java-eventbus)
+[![GitHub release](https://img.shields.io/github/release/falkoschumann/java-eventbus.svg)]()
+
 Simple event bus implementation
 ===============================
 
