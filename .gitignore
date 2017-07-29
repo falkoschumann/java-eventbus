@@ -1,4 +1,4 @@
 # Gradle
+build/
 .gradle
-/build/
-
+gradle.properties
