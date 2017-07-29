@@ -51,7 +51,8 @@ and add the dependency
 
 ### Download
 
-TODO
+You can download JARs with binary, source and JavaDoc from GitHub under
+https://github.com/falkoschumann/java-eventbus/releases.
 
 
 Usage
@@ -64,9 +65,14 @@ examples.
 Contributing
 ------------
 
-### Publish to Bintray
+### Publish artifacts to Bintray
 
 1.  Create file `gradle.properties` and set properties `bintrayUser` and
     `bintrayApiKey`.
 2.  Run `./gradlew uploadArchives`.
 3.  Check uploaded files and publish.
+
+### Publish distribution to GitHub
+
+1.  Run `./gradle distZip`.
+2.  Upload created ZIP to GitHub releases.

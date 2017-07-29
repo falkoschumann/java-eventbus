@@ -38,3 +38,14 @@ uploadArchives {
         }
     }
 }
+
+task distZip(type: Zip) {
+    from 'src/dist'
+    from jar.outputs.files
+    from sourcesJar.outputs.files
+    from javadocJar.outputs.files
+    from(projectDir) {
+        include('README.md', 'CHANGELOG.md', 'LICENSE.txt')
+        rename { fileName -> fileName.replace('.md', '.txt') }
+    }
+}
