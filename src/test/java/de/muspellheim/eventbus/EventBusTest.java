@@ -14,60 +14,106 @@ import static org.junit.Assert.*;
 
 public class EventBusTest {
 
-    private List<Object> events = new ArrayList<>();
+    private List<String> stringEvents = new ArrayList<>();
+    private List<Integer> integerEvents = new ArrayList<>();
+    private List<Number> numberEvents = new ArrayList<>();
+    private List<Number> doubleEvents = new ArrayList<>();
 
-    private void consume(Object event) {
-        events.add(event);
+    private void consumeString(String event) {
+        stringEvents.add(event);
     }
 
-    @Test
-    public void testSubscribePublish() {
-        EventBus bus = EventBus.getDefault();
-        bus.subscribe(String.class, this::consume);
+    private void consumeInt(int event) {
+        integerEvents.add(event);
+    }
 
-        bus.publish("Foo");
-        bus.publish("Bar");
+    private void consumeNumber(Number event) {
+        numberEvents.add(event);
+    }
 
-        assertEquals(Arrays.asList("Foo", "Bar"), events);
+    private void consumeDouble(Number event) {
+        doubleEvents.add(event);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSubscribe_EventTypeNull() {
+    public void subscribe_EventTypeNull() {
         EventBus bus = EventBus.getDefault();
-        bus.subscribe(null, this::consume);
+        bus.subscribe(null, this::consumeString);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSubscribe_ConsumerNull() {
+    public void subscribe_SubscriberNull() {
         EventBus bus = EventBus.getDefault();
         bus.subscribe(String.class, null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testPublish_EventNull() {
+    public void unsubscribe_EventTypeNull() {
         EventBus bus = EventBus.getDefault();
-        bus.subscribe(String.class, this::consume);
+        bus.unsubscribe(null, this::consumeString);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void unsubscribe_SubscriberNull() {
+        EventBus bus = EventBus.getDefault();
+        bus.unsubscribe(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void publish_EventNull() {
+        EventBus bus = EventBus.getDefault();
 
         bus.publish(null);
     }
 
     @Test
-    public void testSubscribeUnscribe() {
+    public void publish() {
         EventBus bus = EventBus.getDefault();
-        Consumer<String> consumer = this::consume;
-        bus.subscribe(String.class, consumer);
+        bus.subscribe(String.class, this::consumeString);
+        bus.subscribe(Integer.class, this::consumeInt);
 
         bus.publish("Foo");
-        bus.unsubscribe(consumer);
+        bus.publish(42);
         bus.publish("Bar");
 
-        assertEquals(Arrays.asList("Foo"), events);
+        assertEquals("string events", Arrays.asList("Foo", "Bar"), stringEvents);
+        assertEquals("integer events", Arrays.asList(42), integerEvents);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testUnsubscribe_ConsumerNull() {
+    @Test
+    public void unsubscribe() {
         EventBus bus = EventBus.getDefault();
-        bus.unsubscribe(null);
+        Consumer<String> subscriber = this::consumeString;
+        bus.subscribe(String.class, subscriber);
+
+        bus.publish("Foo");
+        bus.unsubscribe(subscriber);
+        bus.publish("Bar");
+
+        assertEquals(Arrays.asList("Foo"), stringEvents);
+    }
+
+    @Test
+    public void eventTypeHierarchy() {
+        EventBus bus = EventBus.getDefault();
+        Consumer<Integer> intSubscriber = this::consumeInt;
+        bus.subscribe(Integer.class, intSubscriber);
+        Consumer<Number> numberSubscriber = this::consumeNumber;
+        bus.subscribe(Number.class, numberSubscriber);
+        Consumer<Number> doubleSubscriber = this::consumeDouble;
+        bus.subscribe(Double.class, doubleSubscriber);
+
+        bus.publish(0.815);
+        bus.publish(42);
+        bus.unsubscribe(Number.class, numberSubscriber);
+        bus.unsubscribe(Number.class, doubleSubscriber);
+        bus.publish(3.14);
+        bus.unsubscribe(Integer.class, intSubscriber);
+        bus.publish(7);
+
+        assertEquals("integer events", Arrays.asList(42), integerEvents);
+        assertEquals("number events", Arrays.asList(0.815, 42), numberEvents);
+        assertEquals("double events", Arrays.asList(0.815), doubleEvents);
     }
 
 }
