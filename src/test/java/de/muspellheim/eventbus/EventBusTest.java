@@ -12,6 +12,11 @@ import java.util.function.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests, integration tests, acceptance tests and examples.
+ * <p>
+ * Not enough stuff to separate it.
+ */
 public class EventBusTest {
 
     private List<String> stringEvents = new ArrayList<>();
@@ -107,7 +112,7 @@ public class EventBusTest {
         bus.publish(42);
         bus.unsubscribe(Number.class, numberSubscriber);
         bus.unsubscribe(Number.class, doubleSubscriber);
-        bus.publish(3.14);
+        bus.publish(2.718);
         bus.unsubscribe(Integer.class, intSubscriber);
         bus.publish(7);
 

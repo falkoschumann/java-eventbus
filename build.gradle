@@ -1,3 +1,4 @@
+apply plugin: 'findbugs'
 apply plugin: 'java'
 apply plugin: 'maven'
 
@@ -47,5 +48,12 @@ task distZip(type: Zip) {
     from(projectDir) {
         include('README.md', 'CHANGELOG.md', 'LICENSE.txt')
         rename { fileName -> fileName.replace('.md', '.txt') }
+    }
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
     }
 }
