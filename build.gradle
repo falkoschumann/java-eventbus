@@ -5,6 +5,9 @@ apply plugin: 'maven'
 group = 'de.muspellheim'
 version = '1.0.0'
 
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     jcenter()
 }
