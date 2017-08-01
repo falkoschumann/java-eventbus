@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/falkoschumann/java-eventbus.svg?branch=master)](https://travis-ci.org/falkoschumann/java-eventbus)
 [![GitHub release](https://img.shields.io/github/release/falkoschumann/java-eventbus.svg)]()
 
-Simple event bus implementation
-===============================
+
+Eventbus
+========
 
 Subscribe and publish events. Events are published in channels distinguished by
 event type. Channels can be grouped using an event type hierarchy.
