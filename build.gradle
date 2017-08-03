@@ -1,9 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.4.0'
+    }
+}
+
 apply plugin: 'findbugs'
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'biz.aQute.bnd.builder'
 
 group = 'de.muspellheim'
-version = '1.0.0'
+version = '1.1.0'
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
@@ -14,6 +24,14 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+}
+
+jar {
+    manifest {
+        attributes('Bundle-Name': project.name[0].toUpperCase() + project.name.substring(1))
+        attributes('Bundle-SymbolicName': project.group + '.' + project.name)
+        attributes('Export-Package': project.group + '.' + project.name + '.*', '-sources': 'true',)
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

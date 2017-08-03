@@ -62,8 +62,28 @@ https://github.com/falkoschumann/java-eventbus/releases.
 Usage
 -----
 
-See tests in `src/test/java/de/muspellheim/eventbus/EventBusTest` for usage
-examples.
+You can create an individual event bus by constructor or use the default event
+bus as singleton.
+
+    EventBus bus = EventBus.getDefault();
+
+Subscribe to an event by type. You can use every class as event type.
+Subscribing a super type works as subcribe to any sub type. 
+
+    bus.subscribe(String.class, s -> System.out.println("String: " + s));
+    bus.subscribe(Number.class, n -> System.out.println("Number: " + n));
+
+Let's publish some events.
+
+    bus.publish("Foo"); // String
+    bus.publish(42);    // int
+    bus.publish(2.718); // double
+
+The example output:
+
+    String: Foo
+    Number: 42
+    Number: 2.718
 
 
 Contributing
