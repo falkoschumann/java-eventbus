@@ -11,6 +11,7 @@ event type. Channels can be grouped using an event type hierarchy.
 You can use the default event bus instance, which is a singleton or you can
 create one or multiple instances.
 
+
 Installation
 ------------
 
